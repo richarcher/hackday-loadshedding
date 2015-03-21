@@ -29,6 +29,16 @@ module.exports = function (grunt) {
           }
         },
       },
+      sass: {
+        options: {
+          sourceMap: true
+        },
+        dist: {
+          files: {
+            'assets/style.css': 'assets/scss/style.scss'
+          }
+        }
+      },
       watch: {
         html: {
           files: 'assets/**/*.html',
@@ -40,6 +50,13 @@ module.exports = function (grunt) {
           files: 'assets/**/*.js',
           options: {
             livereload: true
+          }
+        },
+        sass: {
+          files: 'assets/**/*.scss',
+          tasks: ['sass'],
+          options: {
+            livereload: true,
           }
         },
         react: {
@@ -72,6 +89,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
       'wiredep',
       'react',
+      'sass',
       'copy:html',
       'copy:fixtures',
       'useminPrepare',

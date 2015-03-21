@@ -65,7 +65,7 @@ var App = React.createClass({
       return 'assets/fixtures/fixture-schedule' + (Math.floor(Math.random() * (max - min)) + min) + '.json';
     };
     var getZone = function(a,b) {
-      return { 'zone': "Zone 11" };
+      return { 'zone': "Lakeside, CPT" };
     };
     $.getJSON( 'assets/fixtures/zones.js', function( data ) {
       $.when( getZone( data, position ) ).done(function( data ) {
