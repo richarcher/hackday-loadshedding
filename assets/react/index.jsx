@@ -104,7 +104,7 @@ var App = React.createClass({
         maximumAge          : 30000,
         timeout             : 7000
       };
-      navigator.geolocation.watchPosition(this.geolocation_get, this.geolocation_fail, geolocation_options);
+      navigator.geolocation.getCurrentPosition(this.geolocation_get);
     } else {
       this.geolocation_fail();
     }
