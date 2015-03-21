@@ -1,0 +1,17 @@
+{
+  "stage" : "3b",
+  "zone"  : "1",
+  "being_loadshed_text" : "Off",
+  "power" : false,
+  "messages" : [
+    "got candles?",
+    "Bloody Eskom",
+    "Thanks Obama",
+    "Hello darkness my old friend"
+  ],
+  "next_date" : "21|03",
+  "next_times" : [
+    "09:00–11:30",
+    "13:30–16:00"
+  ]
+}

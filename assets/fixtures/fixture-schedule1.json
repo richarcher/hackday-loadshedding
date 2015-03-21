@@ -1,0 +1,21 @@
+{
+  "stage" : "3b",
+  "zone"  : "1",
+  "being_loadshed_text" : "On",
+  "power" : true ,
+  "messages" : [
+    "HUZZAH!",
+    "You can go back to YouTube now",
+    "But it's daylight, so you're probably fine",
+    "Oh, someone must have paid the bill",
+    "Good job it's summer",
+    "/resumes Facebook",
+    "Put that Bear Grylls book away"
+  ],
+  "next_date" : "21|03",
+  "next_times" : [
+    "09:00–11:30",
+    "14:00–16:30",
+    "16:00–18:30"
+  ]
+}
