@@ -3,4 +3,6 @@ node_modules/*
 .tmp/*
 .DS_Store
 assets/index.js
+assets/style.css
+assets/style.css.map
 dist/*
