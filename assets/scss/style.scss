@@ -1,3 +1,5 @@
+@import 'bourbon';
+
 $highlight-color: #fff;
 $lights-off-highlight: #444357;
 $lights-off-color: #2f2e44;
@@ -32,7 +34,7 @@ body,
   margin: 0 auto;
 }
 .app {
-  transition: background-color 0.3s ease;
+  @include transition( background-color 0.3s ease );
 }
   .app--waiting {
     background-color: $lights-off-color;
@@ -84,7 +86,7 @@ body,
     border-bottom-style: solid;
     position: absolute;
     top: 104%;
-    box-sizing: border-box;
+    @include box-sizing(border-box);
     left: 1em;
     right: 1em;
   }
@@ -142,12 +144,11 @@ body,
     text-transform: uppercase;
     font-weight: bold;
   }
-  .nextup--row {}
   .nextup--date,
   .nextup--times {
     display: inline-block;
     width: 50%;
-    box-sizing: border-box;
+    @include box-sizing(border-box);
   }
   .nextup--date {
     font-weight: bold;
@@ -178,43 +179,33 @@ body,
 
 .transition--a-enter {
   opacity: 0.01;
-  transition: opacity .3s ease .1s;
-}
-  .transition--a-enter.transition--a-enter-active {
+  @include transition( opacity .3s ease .1s );
+  &.transition--a-enter-active {
     opacity: 1;
   }
+}
 
 .transition--b-enter {
   opacity: 0.01;
-  transition: opacity .3s ease .5s;
-}
-  .transition--b-enter.transition--b-enter-active {
+  @include transition( opacity .3s ease .5s );
+  &.transition--b-enter-active {
     opacity: 1;
   }
+}
+
 
 .app--on .i-inside {
-  -webkit-animation: high-power 6s ease-in-out infinite both;
-  animation: high-power 6s ease-in-out infinite both;
+  @include animation( high-power 6s ease-in-out infinite both );
 }
-  @keyframes high-power {
-    0% {
-      fill: $lights-on-highlight;
-    }
-    50% {
-      fill: $lights-on-color;
-    }
-    100% {
-      fill: $lights-on-highlight;
-    }
+
+@include keyframes(high-power) {
+  0% {
+    fill: $lights-on-highlight;
   }
-  @-webkit-keyframes high-power {
-    0% {
-      fill: $lights-on-highlight;
-    }
-    50% {
-      fill: $lights-on-color;
-    }
-    100% {
-      fill: $lights-on-highlight;
-    }
+  50% {
+    fill: $lights-on-color;
   }
+  100% {
+    fill: $lights-on-highlight;
+  }
+}

@@ -31,7 +31,8 @@ module.exports = function (grunt) {
       },
       sass: {
         options: {
-          sourceMap: true
+          sourceMap: true,
+          includePaths: require('node-bourbon').includePaths
         },
         dist: {
           files: {
