@@ -42,7 +42,7 @@ var getZone = function( data, position ) {
 
           boundary.setMap(map);
           if (google.maps.geometry.poly.containsLocation(mapOptions.center, boundary)) {
-            areaNumber = v.Name;
+            areaNumber = 'Zone ' + v.Name;
           }
       });
 
@@ -50,6 +50,10 @@ var getZone = function( data, position ) {
         return false;
       }
   });
+  if (areaNumber === undefined) {
+    areaNumber = "No idea. Narnia?";
+  }
+
   return {data: data, zone: areaNumber };
 };
 
