@@ -90,11 +90,17 @@ var App = React.createClass({
       });
     });
   },
-  geolocation_fail: function(a, b) {
+  geolocation_fail: function(err) {
+    var error_lookup = [
+      "Your browser doesn't support GeoLocation",
+      "Please enable your browser to determine your location and try again.",
+      "We've got no idea.. please check your connection and try again.",
+      "It took too long to figure out your location. Please try again later."
+    ];
     this.setState({
       zone : "...",
       answer : "?!?",
-      messages : ["We've got no idea.. please check your connection and try again."],
+      messages : [error_lookup[err.code]],
       classes : 'app app--unknown',
       online : false,
       ready : true,
@@ -103,14 +109,9 @@ var App = React.createClass({
   },
   geoLocate: function() {
     if ("geolocation" in navigator) {
-      var geolocation_options = {
-        enableHighAccuracy  : true,
-        maximumAge          : 30000,
-        timeout             : 7000
-      };
-      navigator.geolocation.getCurrentPosition(this.geolocation_get);
+      navigator.geolocation.getCurrentPosition(this.geolocation_get, this.geolocation_fail, {timeout: 10000});
     } else {
-      this.geolocation_fail();
+      this.geolocation_fail( {code: 0} );
     }
   },
   getInitialState: function() {
