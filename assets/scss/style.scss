@@ -86,7 +86,7 @@ body,
     border-bottom-style: solid;
     position: absolute;
     top: 104%;
-    @include box-sizing(border-box);
+    box-sizing: border-box;
     left: 1em;
     right: 1em;
   }
@@ -148,7 +148,7 @@ body,
   .nextup--times {
     display: inline-block;
     width: 50%;
-    @include box-sizing(border-box);
+    box-sizing: border-box;
   }
   .nextup--date {
     font-weight: bold;

@@ -83,10 +83,15 @@ module.exports = function (grunt) {
           src: ['./assets/fixtures/*'],
           dest: 'dist/'
         }
+      },
+      serve: {
+        options: {
+          port: 9000
+        }
       }
 
     });
-    grunt.registerTask('default', ['wiredep']);
+    grunt.registerTask('preview', ['wiredep','react','sass','serve']);
     grunt.registerTask('build', [
       'wiredep',
       'react',

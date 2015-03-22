@@ -21,6 +21,7 @@
     "grunt-contrib-cssmin": "^0.12.2",
     "grunt-contrib-uglify": "^0.8.0",
     "grunt-sass": "^0.18.1",
-    "node-bourbon": "^4.2.1-beta1"
+    "node-bourbon": "^4.2.1-beta1",
+    "grunt-serve": "^0.1.6"
   }
 }
