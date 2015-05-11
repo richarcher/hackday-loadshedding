@@ -1,111 +1,47 @@
-var stage = {
-  "1" : 0,
-  "2" : 1,
-  "3a" : 2,
-  "3b" : 3
-};
-var current_stage = stage['3b'];
-var day = new Date;
-var getZone = function( data, position ) {
-  var mapOptions = {
-    center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-    zoom: 12
-  };
-  var map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
-  var areaNumber;
-
-  //for each load shedding area
-  $.each(data.PlaceMarks, function (i, v) {
-
-      //each polygon to be drawn to represent the load shedding area
-      $.each(v.MultiGeometry.Polygons, function (i2, v2) {
-          var boundaryCoordinates = [];
-
-          $.each(v2.OuterBoundaryIs.LinearRing.Coordinates, function (i3, v3) {
-              var temp = new google.maps.LatLng(v3.Latitude, v3.Longitude);
-              boundaryCoordinates.push(temp);
-          });
-
-          var boundary = new google.maps.Polygon({
-              paths: boundaryCoordinates,
-              strokeOpacity: 'ff',
-              strokeWeight: 1,
-              fillOpacity: 0.35
-          });
-          var bounds = new google.maps.LatLngBounds();
-          var i;
-
-          for (i = 0; i < boundaryCoordinates.length; i++) {
-              bounds.extend(boundaryCoordinates[i]);
-          }
-
-          boundary.setMap(map);
-          if (google.maps.geometry.poly.containsLocation(mapOptions.center, boundary)) {
-            areaNumber = 'Zone ' + v.Name;
-          }
-      });
-
-      if (areaNumber !== undefined) {
-        return false;
-      }
-  });
-  if (areaNumber === undefined) {
-    areaNumber = "No idea. Narnia?";
-  }
-
-  return {data: data, zone: areaNumber };
-};
-
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var App = React.createClass({
+
+  ErrorLookup : [
+    "Your browser doesn't support GeoLocation",
+    "Please enable your browser to determine your location and try again.",
+    "We've got no idea.. please check your connection and try again.",
+    "It took too long to figure out your location. Please try again later."
+  ],
+  NullStateObj : {
+    zone : "...",
+    answer : "?!?",
+    messages : [],
+    classes : 'app app--unknown',
+    online : false,
+    ready : true,
+    next_date : "--|--"
+  },
+
   geolocation_get: function(position) {
     var proxy = this;
-    var getRandomFixture = function(min, max) {
-      // var fix = "fixtures/fixture-schedule1.json";
-      // var fix = "fixtures/fixture-schedule2.json";
-      // return fix;
-      return 'assets/fixtures/fixture-schedule' + (Math.floor(Math.random() * (max - min)) + min) + '.json';
-    };
-    var getZone = function(a,b) {
-      return { 'zone': "Lakeside, CPT" };
-    };
-    $.getJSON( 'assets/fixtures/zones.js', function( data ) {
-      $.when( getZone( data, position ) ).done(function( data ) {
-        $.getJSON( getRandomFixture(1,3), { 'zone' : data.zone }, function( response ) {
-          var state_class = response.power ? 'app--on' : 'app--off' ;
-          proxy.setState({
-            zone : data.zone,
-            answer : response.being_loadshed_text,
-            messages : response.messages,
-            classes : 'app ' + state_class,
-            power : response.power,
-            next_date : response.next_date,
-            next_times : response.next_times,
-            online : true,
-            ready : true
-          });
-        });
-      });
-    });
+    var coord_data = {'long' : position.coords['longitude'], 'lat' : position.coords['latitude']};
+    $.getJSON( 'http://localhost:9292/zone', coord_data)
+              .done(function( data) {
+                var stateObj = jQuery.extend({}, proxy.NullStateObj, {
+                  zone : data,
+                  answer : 'On',
+                  messages : ['message'],
+                  power : true,
+                  classes : 'app app--on',
+                  online : true
+                });
+
+                proxy.setState( stateObj );
+
+              });
+
   },
   geolocation_fail: function(err) {
-    var error_lookup = [
-      "Your browser doesn't support GeoLocation",
-      "Please enable your browser to determine your location and try again.",
-      "We've got no idea.. please check your connection and try again.",
-      "It took too long to figure out your location. Please try again later."
-    ];
-    this.setState({
-      zone : "...",
-      answer : "?!?",
-      messages : [error_lookup[err.code]],
-      classes : 'app app--unknown',
-      online : false,
-      ready : true,
-      next_date : "--|--"
-    });
+    var proxy = this;
+    this.setState(
+      jQuery.extend( {}, proxy.NullStateObj, { messages : [proxy.ErrorLookup[err.code]] } )
+    );
   },
   geoLocate: function() {
     if ("geolocation" in navigator) {
