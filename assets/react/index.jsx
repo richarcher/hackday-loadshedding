@@ -1,3 +1,5 @@
+var api_url = "https://loadshedding-api.herokuapp.com/zone"
+
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var App = React.createClass({
@@ -21,7 +23,7 @@ var App = React.createClass({
   geolocation_get: function(position) {
     var proxy = this;
     var coord_data = {'long' : position.coords['longitude'], 'lat' : position.coords['latitude']};
-    $.getJSON( 'http://localhost:9292/zone', coord_data)
+    $.getJSON( api_url, coord_data)
               .done(function( data) {
                 var stateObj = jQuery.extend({}, proxy.NullStateObj, {
                   zone : data,
