@@ -57,6 +57,17 @@ body,
   text-align: center;
 }
 
+.debugger {
+  background-color: $highlight-color;
+  padding: 0 1em;
+  pre {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
+}
+
 .navigation a {
   display: inline-block;
   width: 25%;

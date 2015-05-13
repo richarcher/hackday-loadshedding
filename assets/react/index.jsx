@@ -35,6 +35,7 @@ var App = React.createClass({
                 });
 
                 proxy.setState( stateObj );
+                proxy.debuglog('long: ' + position.coords['longitude'] + '  lat: ' + position.coords['latitude']);
 
               });
 
@@ -62,6 +63,10 @@ var App = React.createClass({
     this.geoLocate();
     this.setState({ mounted : true });
   },
+  debuglog: function(string) {
+    string = string || ""
+    this.setState({ debug  : string });
+  },
   render: function() {
     var status;
     if (this.state.ready) {
@@ -70,8 +75,13 @@ var App = React.createClass({
       status = <UnReadyApp />;
     }
     return (
-      <div className={this.state.classes}>
-        {status}
+      <div>
+        <div className={this.state.classes}>
+          {status}
+        </div>
+        <div className="debugger">
+          <DebugDisplay messages={this.state.debug} />
+        </div>
       </div>
     );
   }
@@ -194,7 +204,7 @@ var NextUp = React.createClass({
   },
   render: function() {
     var classes = "nextup";
-    var times;
+    var times, child;
     if (this.props.times) {
       times = this.props.times.map(function (time) {
         return (
@@ -244,7 +254,7 @@ var CountDown = React.createClass({
 
 var LocationPicker = React.createClass({
   render: function() {
-    var classes = "location"
+    var classes = "location";
     classes += (this.props.power ? " location--on" : " location--off");
 
     return (
@@ -256,6 +266,20 @@ var LocationPicker = React.createClass({
         </svg>
         {this.props.zone}
       </div>
+    );
+  }
+});
+
+var DebugDisplay = React.createClass({
+  render: function() {
+    var block;
+    if (this.props.messages) {
+      block = <code><pre>{this.props.messages}</pre></code>;
+    } else {
+      block = null;
+    }
+    return (
+      <div>{block}</div>
     );
   }
 });
