@@ -11,9 +11,6 @@ $lights-on-lolight: #f0c64a;
 $lights-on-alt: #f6cc4a;
 
 
-#map-canvas {
-  height: 0;
-}
 html,
 body {
   margin: 0;
@@ -162,6 +159,7 @@ body,
 
 .i-pin {
   width: 1em;
+  height: 1.35em;
   vertical-align: text-bottom;
   padding-right: 0.5em;
   .i-outer {
