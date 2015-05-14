@@ -75,8 +75,11 @@ module.exports = function (grunt) {
         html:['dist/index.html']
       },
       copy:{
-        html: {
-          src: './index.html', dest: 'dist/index.html'
+        build: {
+          files: [
+            { src: './index.html', dest: 'dist/index.html' },
+            { src: 'assets/images/favicon.ico', dest: 'dist/favicon.ico' },
+          ]
         }
       },
       serve: {
@@ -91,7 +94,7 @@ module.exports = function (grunt) {
       'react',
       'sass',
       'wiredep',
-      'copy:html',
+      'copy',
       'useminPrepare',
       'concat',
       'uglify',
