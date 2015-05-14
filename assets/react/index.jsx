@@ -1,4 +1,17 @@
-var api_url = "https://loadshedding-api.herokuapp.com/zone"
+var api_url = "https://loadshedding-api.herokuapp.com/zone";
+
+var extend = function(out) {
+  out = out || {};
+  for (var i = 1; i < arguments.length; i++) {
+    if (!arguments[i])
+      continue;
+    for (var key in arguments[i]) {
+      if (arguments[i].hasOwnProperty(key))
+        out[key] = arguments[i][key];
+    }
+  }
+  return out;
+};
 
 var App = React.createClass({
 
@@ -27,29 +40,36 @@ var App = React.createClass({
   },
   geolocation_get: function(position) {
     var proxy = this;
-    var coord_data = {'long' : position.coords['longitude'], 'lat' : position.coords['latitude']};
-    $.getJSON( api_url, coord_data)
-              .done(function( data) {
-                var stateObj = jQuery.extend({}, proxy.NullStateObj, {
-                  zone : data,
-                  answer : 'On',
-                  messages : ['message'],
-                  power : true,
-                  classes : 'app app--on',
-                  online : true
-                });
+    var ajax_url = api_url + "?long=" + position.coords['longitude'] + "&lat=" + position.coords['latitude'];
+    var request = new XMLHttpRequest();
 
-                proxy.setState( stateObj );
-                proxy.debuglog('long: ' + position.coords['longitude'] + '  lat: ' + position.coords['latitude']);
+    request.open('GET', ajax_url, true);
 
-              });
+    request.onreadystatechange = function() {
+      if (this.readyState === 4) {
+        if (this.status >= 200 && this.status < 400) {
+          var data = JSON.parse(this.responseText);
+          var stateObj = extend( {}, proxy.NullStateObj, {
+            zone : data,
+            answer : 'On',
+            messages : ['message'],
+            power : true,
+            classes : 'app app--on',
+            online : true
+          });
+          proxy.debuglog('long: ' + position.coords['longitude'] + '  lat: ' + position.coords['latitude']);
+          proxy.setState( stateObj );
+        }
+      }
+    };
+    request.send();
+    request = null;
   },
   geolocation_fail: function(err) {
-    var proxy = this;
-    proxy.debuglog(err);
-    this.setState(
-      jQuery.extend( {}, proxy.NullStateObj, { messages : [proxy.ErrorLookup[err.code]] } )
-    );
+    var errorObj = { messages : [ "error" ] };
+    var stateObj = extend( {}, this.NullStateObj, errorObj );
+    this.debuglog(err);
+    this.setState( stateObj );
   },
   debuglog: function(string) {
     string = string || ""
@@ -90,7 +110,10 @@ var ReadyApp = React.createClass({
       <div>
         <Navigation />
         <Answer data={this.props.data} />
-        <NextUp date={this.props.data.next_date} times={this.props.data.next_times} power={this.props.data.power} online={this.props.data.online} />
+        <NextUp date={this.props.data.next_date}
+                times={this.props.data.next_times}
+                power={this.props.data.power}
+                online={this.props.data.online} />
       </div>
     );
   }
