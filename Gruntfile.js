@@ -77,11 +77,6 @@ module.exports = function (grunt) {
       copy:{
         html: {
           src: './index.html', dest: 'dist/index.html'
-        },
-        fixtures: {
-          expand: true,
-          src: ['./assets/fixtures/*'],
-          dest: 'dist/'
         }
       },
       serve: {
@@ -97,7 +92,6 @@ module.exports = function (grunt) {
       'react',
       'sass',
       'copy:html',
-      'copy:fixtures',
       'useminPrepare',
       'concat',
       'uglify',
