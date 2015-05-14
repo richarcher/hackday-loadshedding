@@ -16,7 +16,7 @@ module.exports = function (grunt) {
             // https://github.com/taptapship/wiredep#configuration
             overrides: {
               react:{
-                main: "react-with-addons.js"
+                main: "react-with-addons.min.js"
               }
             }
           }
@@ -88,9 +88,9 @@ module.exports = function (grunt) {
     });
     grunt.registerTask('preview', ['wiredep','react','sass','serve']);
     grunt.registerTask('build', [
-      'wiredep',
       'react',
       'sass',
+      'wiredep',
       'copy:html',
       'useminPrepare',
       'concat',
