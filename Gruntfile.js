@@ -16,7 +16,7 @@ module.exports = function (grunt) {
             // https://github.com/taptapship/wiredep#configuration
             overrides: {
               react:{
-                main: "react-with-addons.min.js"
+                main: "react.min.js"
               }
             }
           }

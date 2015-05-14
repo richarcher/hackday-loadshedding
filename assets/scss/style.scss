@@ -30,9 +30,7 @@ body,
   max-width: 700px;
   margin: 0 auto;
 }
-.app {
-  @include transition( background-color 0.3s ease );
-}
+.app {}
   .app--waiting {
     background-color: $lights-off-color;
     color: $highlight-color;
@@ -185,23 +183,6 @@ body,
     fill: $lights-off-color;
   }
 }
-
-.transition--a-enter {
-  opacity: 0.01;
-  @include transition( opacity .3s ease .1s );
-  &.transition--a-enter-active {
-    opacity: 1;
-  }
-}
-
-.transition--b-enter {
-  opacity: 0.01;
-  @include transition( opacity .3s ease .5s );
-  &.transition--b-enter-active {
-    opacity: 1;
-  }
-}
-
 
 .app--on .i-inside {
   @include animation( high-power 6s ease-in-out infinite both );

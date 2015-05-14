@@ -1,7 +1,5 @@
 var api_url = "https://loadshedding-api.herokuapp.com/zone"
 
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
-
 var App = React.createClass({
 
   ErrorLookup : [
@@ -60,13 +58,11 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      classes : 'app app--waiting',
-      mounted : false
+      classes : 'app app--waiting'
     };
   },
   componentDidMount: function() {
     this.geoLocate();
-    this.setState({ mounted : true });
   },
   render: function() {
     var status;
@@ -122,16 +118,8 @@ var Navigation = React.createClass({
 });
 
 var Answer = React.createClass({
-  getInitialState: function() {
-    return { mounted: false };
-  },
-  componentDidMount: function() {
-    this.setState({ mounted : true });
-  },
   render: function() {
-    var child;
-    if (this.state.mounted) {
-      child =
+    return (
         <div className="answer">
           <p>the power in</p>
           <LocationPicker zone={this.props.data.zone} power={this.props.data.power} />
@@ -139,73 +127,34 @@ var Answer = React.createClass({
           <CountDown />
           <Messages messages={this.props.data.messages} />
         </div>
-    } else {
-      child = null
-    }
-    return (
-      <ReactCSSTransitionGroup transitionName="transition--a">
-        {child}
-      </ReactCSSTransitionGroup>
     );
   }
 });
 
 var AnswerText = React.createClass({
-  getInitialState: function() {
-    return { mounted: false };
-  },
-  componentDidMount: function() {
-    this.setState({ mounted : true });
-  },
   render: function() {
-    var child;
-    if (this.state.mounted) {
-      child = <span className="answer--answer">{this.props.answer}</span>
-    } else {
-      child = null
-    }
     return (
       <div className="answer--wrapper">
         <span className="answer--is">is</span>
-          {child}
+        <span className="answer--answer">{this.props.answer}</span>
       </div>
     );
   }
 });
 
 var Messages = React.createClass({
-  getInitialState: function() {
-    return { mounted: false };
-  },
-  componentDidMount: function() {
-    this.setState({ mounted : true });
-  },
   render: function() {
-    var message = this.props.messages[Math.floor(Math.random()*this.props.messages.length)]
-    var child;
-    if (this.state.mounted) {
-      child = <div className="message">{message}</div>
-    } else {
-      child = null
-    }
+    var message = this.props.messages[Math.floor(Math.random()*this.props.messages.length)];
     return (
-      <ReactCSSTransitionGroup transitionName="transition--b">
-        {child}
-      </ReactCSSTransitionGroup>
+        <div className="message">{message}</div>
     );
   }
 });
 
 var NextUp = React.createClass({
-  getInitialState: function() {
-    return { mounted: false };
-  },
-  componentDidMount: function() {
-    this.setState({ mounted : true });
-  },
   render: function() {
     var classes = "nextup";
-    var times, child;
+    var times;
     if (this.props.times) {
       times = this.props.times.map(function (time) {
         return (
@@ -214,8 +163,8 @@ var NextUp = React.createClass({
       });
     }
     classes += (this.props.power ? " nextup--on" : " nextup--off");
-    if (this.state.mounted) {
-      child = <div className={classes}>
+    return (
+      <div className={classes}>
         <div className="container">
           <div className="nextup--header">Next power cut</div>
           <div className="nextup--row">
@@ -226,13 +175,6 @@ var NextUp = React.createClass({
           </div>
         </div>
       </div>
-    } else {
-      child = null
-    }
-    return (
-      <ReactCSSTransitionGroup transitionName="transition--a">
-        {child}
-      </ReactCSSTransitionGroup>
     );
   }
 });
