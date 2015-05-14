@@ -42,6 +42,7 @@ var App = React.createClass({
   },
   geolocation_fail: function(err) {
     var proxy = this;
+    proxy.debuglog(err);
     this.setState(
       jQuery.extend( {}, proxy.NullStateObj, { messages : [proxy.ErrorLookup[err.code]] } )
     );
