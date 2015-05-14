@@ -5,10 +5,10 @@ var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 var App = React.createClass({
 
   ErrorLookup : [
-    "Your browser doesn't support GeoLocation",
-    "Please enable your browser to determine your location and try again.",
-    "We've got no idea.. please check your connection and try again.",
-    "It took too long to figure out your location. Please try again later."
+    "Geolocation not supported in browser",
+    "PERMISSION_DENIED - err code: 1",
+    "POSITION_UNAVAILABLE - err code: 2",
+    "TIMEOUT - err code: 3"
   ],
   NullStateObj : {
     zone : "...",
@@ -20,6 +20,13 @@ var App = React.createClass({
     next_date : "--|--"
   },
 
+  geoLocate: function() {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(this.geolocation_get, this.geolocation_fail, {timeout: 15000});
+    } else {
+      this.geolocation_fail( {code: 0} );
+    }
+  },
   geolocation_get: function(position) {
     var proxy = this;
     var coord_data = {'long' : position.coords['longitude'], 'lat' : position.coords['latitude']};
@@ -38,7 +45,6 @@ var App = React.createClass({
                 proxy.debuglog('long: ' + position.coords['longitude'] + '  lat: ' + position.coords['latitude']);
 
               });
-
   },
   geolocation_fail: function(err) {
     var proxy = this;
@@ -47,13 +53,11 @@ var App = React.createClass({
       jQuery.extend( {}, proxy.NullStateObj, { messages : [proxy.ErrorLookup[err.code]] } )
     );
   },
-  geoLocate: function() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(this.geolocation_get, this.geolocation_fail, {timeout: 10000});
-    } else {
-      this.geolocation_fail( {code: 0} );
-    }
+  debuglog: function(string) {
+    string = string || ""
+    this.setState({ debug  : string });
   },
+
   getInitialState: function() {
     return {
       classes : 'app app--waiting',
@@ -63,10 +67,6 @@ var App = React.createClass({
   componentDidMount: function() {
     this.geoLocate();
     this.setState({ mounted : true });
-  },
-  debuglog: function(string) {
-    string = string || ""
-    this.setState({ debug  : string });
   },
   render: function() {
     var status;
