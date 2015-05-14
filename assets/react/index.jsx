@@ -103,7 +103,7 @@ var ReadyApp = React.createClass({
 var UnReadyApp = React.createClass({
   render: function() {
     return (
-      <div className="loading">Loading&hellip;</div>
+      <div className="loading">Determining location&hellip;</div>
     );
   }
 });
