@@ -1,6 +1,7 @@
 bower_components/*
 node_modules/*
 .tmp/*
+.vagrant/
 .DS_Store
 assets/index.js
 assets/style.css

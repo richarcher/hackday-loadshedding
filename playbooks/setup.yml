@@ -1,0 +1,11 @@
+---
+- hosts: all
+
+  tasks:
+    - include: tasks/setup_dependencies.yml
+    - include: tasks/setup_node_environment.yml
+
+  vars_files:
+    - vars/vars.yml
+
+
