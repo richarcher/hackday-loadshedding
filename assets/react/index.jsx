@@ -36,7 +36,6 @@ var App = React.createClass({
       this.geolocation_fail( {code: 0} );
       return;
     } else {
-      console.log('ignore me then');
       navigator.geolocation.getCurrentPosition(this.geolocation_get, this.geolocation_fail, {maximumAge: 0, timeout: 15000});
     }
   },
