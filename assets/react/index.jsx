@@ -17,9 +17,9 @@ var App = React.createClass({
 
   ErrorLookup : [
     "Geolocation not supported in browser",
-    "PERMISSION_DENIED - err code: 1",
-    "POSITION_UNAVAILABLE - err code: 2",
-    "TIMEOUT - err code: 3"
+    "PERMISSION_DENIED",
+    "POSITION_UNAVAILABLE",
+    "TIMEOUT"
   ],
   NullStateObj : {
     zone : "...",
@@ -32,10 +32,12 @@ var App = React.createClass({
   },
 
   geoLocate: function() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(this.geolocation_get, this.geolocation_fail, {timeout: 15000});
-    } else {
+    if (!navigator.geolocation) {
       this.geolocation_fail( {code: 0} );
+      return;
+    } else {
+      console.log('ignore me then');
+      navigator.geolocation.getCurrentPosition(this.geolocation_get, this.geolocation_fail, {maximumAge: 0, timeout: 15000});
     }
   },
   geolocation_get: function(position) {
@@ -52,7 +54,7 @@ var App = React.createClass({
           var stateObj = extend( {}, proxy.NullStateObj, {
             zone : data,
             answer : 'On',
-            messages : ['message'],
+            messages : ['Message will go here'],
             power : true,
             classes : 'app app--on',
             online : true
@@ -66,13 +68,13 @@ var App = React.createClass({
     request = null;
   },
   geolocation_fail: function(err) {
-    var errorObj = { messages : [ "error" ] };
+    var errorObj = { messages : [ this.ErrorLookup[err.code] + " - err code: " + err.code ] };
     var stateObj = extend( {}, this.NullStateObj, errorObj );
     this.debuglog(err);
     this.setState( stateObj );
   },
   debuglog: function(string) {
-    string = string || ""
+    string = string || "";
     this.setState({ debug  : string });
   },
 
