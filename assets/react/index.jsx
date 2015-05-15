@@ -1,4 +1,4 @@
-var api_url = "https://loadshedding-api.herokuapp.com/zone";
+var api_url = "http://192.168.200.10/zone";
 
 var extend = function(out) {
   out = out || {};
